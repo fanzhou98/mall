@@ -1,0 +1,15 @@
+@import "nomalize.css";
+body{
+    padding: 0;
+    margin: 0;
+    font-family:"Arial","Microsoft YaHei","黑体","宋体",sans-serif;;
+}
+/*获取根html元素*/
+:root{
+    /*定义变量*/
+    --color-high-text:#f6b93b;
+    --color-tint: #fad390;
+    --color-dark:#fa983a;
+    --color-middle:#f8c291;
+    --font-size:14px;
+}
