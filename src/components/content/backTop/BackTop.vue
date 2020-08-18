@@ -1,0 +1,35 @@
+<template>
+  <div>
+    <div class="wrap" :style="{right:right+'px',bottom: bottom+'px'}">
+      <svg width="2.5em" height="2.5em" viewBox="0 0 16 16" class=" bi bi-arrow-up-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-10.646.354a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 6.207V11a.5.5 0 0 1-1 0V6.207L5.354 8.354z"/>
+      </svg>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: "BackTop",
+    props:{
+      right:{
+        type: Number,
+        default: 10
+      },
+      bottom:{
+        type: Number,
+        default: 60
+      }
+    }
+  }
+</script>
+
+<style scoped>
+.wrap{
+  position: fixed;
+  z-index: 999;
+}
+  .bi{
+    color: #ffcccc;
+  }
+</style>
