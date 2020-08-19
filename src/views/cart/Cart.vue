@@ -1,12 +1,18 @@
 <template>
   <div>
-    <h2>This is cart</h2>
+    <div class="container">
+      <cart-nav/>
+    </div>
   </div>
 </template>
 
 <script>
+  import CartNav from "./cartComponents/CartNav";
   export default {
-    name: "Cart"
+    name: "Cart",
+    components:{
+      CartNav
+    }
   }
 </script>
 

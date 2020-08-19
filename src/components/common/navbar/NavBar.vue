@@ -1,6 +1,6 @@
 <template>
   <!--此组件需搭配BootStrap使用，使用时需传入col的参数-->
-  <div class="">
+  <div>
       <div :class="cLeftColNum"><slot name="left" ></slot></div>
       <div :class="cMiddleColNum"><slot name="middle"></slot></div>
       <div :class="cRightColNum"><slot name="right" ></slot></div>

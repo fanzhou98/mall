@@ -9,7 +9,7 @@
     <!--price-->
     <div class="row">
       <div class="col d-flex">
-        <b class="nowPice">{{'￥'+this.goods.lowNowPrreice}}</b>
+        <b class="nowPice">{{'￥'+this.goods.lowNowPrice}}</b>
         <s class="text-muted pt-3">{{this.goods.oldPrice}}</s>
         <div class="tag" v-show="this.goods.discountDesc">
           <b class="border-danger" >{{this.goods.discountDesc}}</b>

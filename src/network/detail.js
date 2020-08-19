@@ -22,13 +22,13 @@ export function getRecommend() {
 /*Goods简介*/
 export class Goods {
   constructor(itemInfo,columns,services) {
-    this.title = itemInfo.title
-    this.desc = itemInfo.desc
-    this.lowNowPrreice = itemInfo.lowNowPrice
-    this.oldPrice = itemInfo.oldPrice
-    this.discountDesc =itemInfo.discountDesc
-    this.columns =columns
-    this.services = services
+    this.title = itemInfo.title;
+    this.desc = itemInfo.desc;
+    this.lowNowPrice = itemInfo.lowNowPrice;
+    this.oldPrice = itemInfo.oldPrice;
+    this.discountDesc =itemInfo.discountDesc;
+    this.columns =columns;
+    this.services = services;
     this.realPrice =itemInfo.realPrice
   }
 }

@@ -14,11 +14,11 @@
     props:{
       right:{
         type: Number,
-        default: 10
+        default: 5
       },
       bottom:{
         type: Number,
-        default: 60
+        default: 70
       }
     }
   }

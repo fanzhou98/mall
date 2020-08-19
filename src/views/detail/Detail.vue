@@ -1,7 +1,9 @@
 <template>
   <div>
       <div class="container" id="main-wrap">
-        <detail-nav-bar class="nav shadow-sm row" @navClick="navClick"></detail-nav-bar>
+        <detail-nav-bar class="nav shadow-sm row"
+                        @navClick="navClick"
+                        ref="navBar"/>
         <!--Scroll-->
         <scroll class="scroll"
                 :probeType="3"
@@ -36,9 +38,13 @@
           <goods-list :goods="recommends" ref="recommends"/>
         </scroll>
       </div>
+
     <!--BackTop-->
     <back-top @click.native="backUpClick"
               v-show="showBackTop"/>
+
+    <!--DetailBottomBar-->
+    <detail-bottom-bar @addCart="addCart"/>
   </div>
 </template>
 
@@ -51,6 +57,7 @@
   import DetailGoodsInfo from "./childComponents/DetailGoodsInfo";
   import DetailGoodsParams from "./childComponents/DetailGoodsParams";
   import DetailComments from "./childComponents/DetailComments";
+  import DetailBottomBar from "./childComponents/DetailBottomBar";
 
   /*network*/
   import {getDetail,Goods,Shop,Params,Comments,getRecommend} from 'network/detail'
@@ -79,6 +86,7 @@
       DetailComments,
       GoodsList,
       BackTop,
+      DetailBottomBar,
     },
     mixins:[
       goodsListDebounce,
@@ -98,7 +106,7 @@
         navY:[],
         getNavY:null,
         imageLoad:null,
-
+        tabChange:false,
       }
     },
     created() {
@@ -155,43 +163,81 @@
           this.recommends = res.data.list
         })
 
-        /*debounce*/
+        /*debounce
+        * 当图片加载完成进入debounce，因为每一张图片的加载完成都会调用一次imageLoad方法，
+        * 所以这里使用debounce
+        * */
+        //高度赋值debounce
         this.getNavY = debounce(()=>{
           this.navY = []
-          // console.log(this.$refs.recommends.$el);
           this.navY.push(0)
           this.navY.push(this.$refs.params.$el.offsetTop)
           this.navY.push(this.$refs.comments.$el.offsetTop)
           this.navY.push(this.$refs.recommends.$el.offsetTop)
-          console.log(this.navY);
-        })
-
+          this.navY.push(this.$refs.recommends.$el.offsetTop+10000)
+          this.tabChange = true
+          //console.log(this.navY);
+        },20)
+        //图片加载完成滚动刷新debounce
         this.imageLoad = debounce(()=>{
           this.$refs.scroll.refresh()
         })
       })
-
     },
     methods:{
-      //图片加载完成后刷新scroll
+      /*
+      * 图片加载监听
+      * */
       imageLoaded(){
-        this.imageLoad()
-        //this.$refs.scroll.refresh()
+        //图片加载完成后刷新scroll
+        this.imageLoad();
         this.getNavY()
       },
-      //决定回到顶部是否显示的高度
+      /*
+      * 滚动监听
+      * */
       getScrollPosition(position){
+        //回到顶部按钮
         this.showBackTop = (-position.y) > 1000;
-        //console.log(position.y);
+        //navBar随滚动变化
+        for(let i = 0; i<this.navY.length-1; i++){
+          let nowY = -position.y
+          /*第一个条件防止赋值频繁*/
+          if(this.currentIndex!==i && this.navY[i] < nowY && nowY <= this.navY[i+1]){
+            this.$refs.navBar.currentIndex = i
+          }
+        }
       },
-      //nav点击
+      /*
+      * nav点击
+      * */
       navClick(index){
-        this.$refs.scroll.refresh()
-        this.$refs.scroll.scrollTo(0,-this.navY[index])
+        if(this.tabChange){
+          this.$refs.scroll.scrollTo(0,-this.navY[index]-1,0)
+          this.$refs.navBar.currentIndex = index
+        }else {
+          setTimeout(()=>{
+            this.$refs.scroll.scrollTo(0,-this.navY[index],500)
+          },500)
+        }
+      },
+      addCart(){
+        let addedGoods = {};
+        /*加入购物车数据*/
+        addedGoods.topImages = this.topImages[0];
+        addedGoods.title = this.goods.title;
+        addedGoods.desc = this.goods.desc;
+        addedGoods.price = this.goods.lowNowPrice;
+        addedGoods.id = this.id;
+        addedGoods.count = 1;
+        //console.log(this.$store.state);
+        //this.$store.commit('addCart',addedGoods)
+        this.$store.dispatch('addCart',addedGoods)
       }
     },
+
     /*
-    * 当离开detail时，停止对公共组件goosItem中imageLoaded的监听
+    * 当离开detail时，停止对公共组件goodsItem中imageLoaded的监听
     * */
     destroyed() {
       this.$bus.$off('imageLoaded',this.goodsImageListener)
@@ -204,7 +250,6 @@
     background-color: white;
     position: relative;
     z-index: 101;
-    height: 100vh;
     font-weight: 200;
   }
   .nav{
@@ -213,6 +258,6 @@
     background-color: white;
   }
   .scroll{
-    height: calc(100% - 45px);
+    height: calc(100vh - 100px);
   }
 </style>
