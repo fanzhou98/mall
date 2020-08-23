@@ -3,8 +3,19 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+import VueLazyLoad from "vue-lazyload";
+Vue.use(VueLazyLoad,{
+  loading:require('./assets/img/1.png')
+});
+
+import fastClick from 'fastclick'
+fastClick.attach(document.body);
+
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 Vue.use(VueAwesomeSwiper);
+
+import toast from 'components/common/toast'
+Vue.use(toast);
 
 import 'swiper/dist/css/swiper.min.css'
 //swiper,在开发时需要

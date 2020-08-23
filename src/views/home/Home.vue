@@ -25,12 +25,11 @@
       <scroll class="main-content"
               :probeType="3"
               :pull-up-load="true"
+              :listenScroll="true"
               ref="scroll"
               @getScrollPosition="getScrollPosition"
               @pullUp="loadMore"
-              :pulldown="true"
-              :data="[this.currentTabName,this.currentTabIndex,this.goods]"
-              :listenScroll="true">
+              :data="[this.currentTabName,this.currentTabIndex,this.goods]">
         <!--swiper-->
         <div class="row swiper">
           <div class="col">
@@ -70,9 +69,9 @@
 
 <script>
   /*Home子组件*/
-  import HomeSwiper from './childcomponents/HomeSwiper'
-  import HomeRecommand from "./childcomponents/HomeRecommand";
-  import FeatureView from "./childcomponents/FeatureView";
+  import HomeSwiper from './homeChildcomponents/HomeSwiper'
+  import HomeRecommand from "./homeChildcomponents/HomeRecommand";
+  import FeatureView from "./homeChildcomponents/FeatureView";
 
   /*common组件*/
   import NavBar from 'components/common/navbar/NavBar'
@@ -146,14 +145,17 @@
           switch (index) {
             case 0:{
               this.currentTabName = 'pop';
+              this.$refs.scroll.scrollTo(0,this.A,150)
               break
             }
             case 1:{
               this.currentTabName = 'new';
+              this.$refs.scroll.scrollTo(0,this.B,150)
               break
             }
             case 2:{
               this.currentTabName = 'sell';
+              this.$refs.scroll.scrollTo(0,this.C,150)
               break
             }
           }
@@ -170,6 +172,16 @@
        // console.log(position);
         //决定tabbar是否固定
         this.fixTabControl = (-position.y) > this.tabControlTop
+
+        if (this.currentTabName === 'pop'){
+          this.A = position.y
+        }
+        if(this.currentTabName === 'new'){
+          this.B = position.y
+        }
+        if(this.currentTabName === 'sell'){
+          this.C = position.y
+        }
       },
       //上拉加载更多
       loadMore(){
@@ -178,7 +190,7 @@
       //监听swiper加载
       swiperImageLoaded(){
         //这里获取的offsetTop是到最顶端的，是到元素外面一层位置为absolute/fixed/relative的元素的顶部的距离，也就是header，位置为relative
-        this.tabControlTop = this.$refs.tabControl1.$el.offsetTop-45
+        this.tabControlTop = this.$refs.tabControl1.$el.offsetTop
       },
 
       /*
@@ -198,20 +210,6 @@
           //this.$refs.scroll.finishPullUp()
         })
       }
-    },
-
-    asctivated(){
-      /*if (this.currentTabName === 'pop'){
-        //this.$refs.scroll.scrollTo(0,this.tabA,0)
-        console.log(this.tabA);
-      }
-      if(this.currentTabName === 'new'){
-        this.$refs.scroll.scrollTo(0,this.tabB,0)
-      }
-      if(this.currentTabName === 'sell'){
-        this.$refs.scroll.scrollTo(0,this.tabC,0)
-      }*/
-
     },
     deactivated(){
       //取消对公共组件的全局事件监听
@@ -235,12 +233,8 @@
   #recommand{
     background-color:white ;
   }
-  .container{
-    height: 100vh;
-    width: 100vw;
-  }
   .main-content{
-    height: calc(100vh - 94px);
+    height: calc(100vh - 45px - 49px);
   }
   .tabControl-2{
     position: fixed;
@@ -250,8 +244,5 @@
     background-color: #fff;
     padding-left: 15px;
     padding-right: 15px;
-  }
-  .container{
-    height: calc(100vh - 45px);
   }
 </style>

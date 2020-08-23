@@ -1,16 +1,17 @@
 <template>
   <div>
       <div class="container" id="main-wrap">
+        <!--Nav-->
         <detail-nav-bar class="nav shadow-sm row"
                         @navClick="navClick"
                         ref="navBar"/>
         <!--Scroll-->
         <scroll class="scroll"
                 :probeType="3"
+                :click = true
                 :pull-up-load="true"
                 ref="scroll"
                 :listen-scroll="true"
-                :pulldown="true"
                 @getScrollPosition="getScrollPosition">
           <!--Swiper-->
           <div class="row swiper">
@@ -50,14 +51,14 @@
 
 <script>
   /*child components*/
-  import DetailNavBar from "./childComponents/DetailNavBar";
-  import DetailSwiper from "./childComponents/DetailSwiper";
-  import DetailBaseInfo from "./childComponents/DetailBaseInfo";
-  import DetailShopInfo from "./childComponents/DetailShopInfo";
-  import DetailGoodsInfo from "./childComponents/DetailGoodsInfo";
-  import DetailGoodsParams from "./childComponents/DetailGoodsParams";
-  import DetailComments from "./childComponents/DetailComments";
-  import DetailBottomBar from "./childComponents/DetailBottomBar";
+  import DetailNavBar from "./detailChildComponents/DetailNavBar";
+  import DetailSwiper from "./detailChildComponents/DetailSwiper";
+  import DetailBaseInfo from "./detailChildComponents/DetailBaseInfo";
+  import DetailShopInfo from "./detailChildComponents/DetailShopInfo";
+  import DetailGoodsInfo from "./detailChildComponents/DetailGoodsInfo";
+  import DetailGoodsParams from "./detailChildComponents/DetailGoodsParams";
+  import DetailComments from "./detailChildComponents/DetailComments";
+  import DetailBottomBar from "./detailChildComponents/DetailBottomBar";
 
   /*network*/
   import {getDetail,Goods,Shop,Params,Comments,getRecommend} from 'network/detail'
@@ -117,7 +118,7 @@
       * */
       getDetail(this.id).then((res)=>{
         const data = res.result
-        //console.log(data);
+        console.log(res);
         /*
         *轮播图
         * */
@@ -181,7 +182,8 @@
         //图片加载完成滚动刷新debounce
         this.imageLoad = debounce(()=>{
           this.$refs.scroll.refresh()
-        })
+          this.tabChange = true
+        },20)
       })
     },
     methods:{
@@ -201,7 +203,7 @@
         this.showBackTop = (-position.y) > 1000;
         //navBar随滚动变化
         for(let i = 0; i<this.navY.length-1; i++){
-          let nowY = -position.y
+          let nowY = -position.y;
           /*第一个条件防止赋值频繁*/
           if(this.currentIndex!==i && this.navY[i] < nowY && nowY <= this.navY[i+1]){
             this.$refs.navBar.currentIndex = i
@@ -213,14 +215,13 @@
       * */
       navClick(index){
         if(this.tabChange){
-          this.$refs.scroll.scrollTo(0,-this.navY[index]-1,0)
+          this.$refs.scroll.scrollTo(0,-this.navY[index]-1,200);
           this.$refs.navBar.currentIndex = index
-        }else {
-          setTimeout(()=>{
-            this.$refs.scroll.scrollTo(0,-this.navY[index],500)
-          },500)
         }
       },
+      /*
+      * 加入购物车
+      * */
       addCart(){
         let addedGoods = {};
         /*加入购物车数据*/
@@ -232,7 +233,9 @@
         addedGoods.count = 1;
         //console.log(this.$store.state);
         //this.$store.commit('addCart',addedGoods)
-        this.$store.dispatch('addCart',addedGoods)
+        this.$store.dispatch('addCart',addedGoods).then((res)=>{
+          this.$toast.toast(res)
+        })
       }
     },
 

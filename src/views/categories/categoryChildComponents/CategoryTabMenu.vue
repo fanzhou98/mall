@@ -1,0 +1,74 @@
+<template>
+  <div>
+    <scroll class="main-content"
+            :probeType="3"
+            :pull-up-load="true"
+            :listenScroll="true"
+            ref="scroll">
+      <div class="wrap shadow-sm d-flex justify-content-center align-items-center"
+           v-for="(item,index) in tabInfo"
+           @click="tabClick(index)"
+           :class="{active:nowIndex===index,
+                    activeTop:nowIndex-1===index,
+                    activeBtm:nowIndex+1===index}">
+
+        <div>{{item.title}}</div>
+      </div>
+    </scroll>
+  </div>
+</template>
+
+<script>
+  import scroll from "components/common/scroll/Scroll";
+  export default {
+    name: "CategoryTanMenu",
+    components:{
+      scroll
+    },
+    props:{
+      tabInfo:{
+        type:Array,
+        default:null
+      }
+    },
+    data(){
+      return{
+        nowIndex:0
+      }
+    },
+    methods:{
+      tabClick(index){
+        this.nowIndex = index
+        //console.log(this.nowIndex);
+      }
+    }
+  }
+</script>
+
+<style scoped>
+  .main-content{
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 49px - 45px);
+  }
+  .wrap{
+    height: 40px;
+    text-align: center;
+    font-size: 15px;
+    /*margin-bottom: 5px;*/
+    border-bottom: 1px solid whitesmoke;
+    background-color: #ffb8b8;
+    font-weight: 200;
+  }
+  .active{
+    color: white;
+    border-radius:0 10px 10px 0;
+    transition: 50ms;
+  }
+  .activeTop{
+    border-radius:0 0 10px 0;
+  }
+  .activeBtm{
+    border-radius:0 10px 0 0;
+  }
+</style>

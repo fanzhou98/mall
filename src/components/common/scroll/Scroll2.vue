@@ -60,7 +60,8 @@
        */
       pulldown: {
         type: Boolean,
-        default: false
+        default: true,
+        bounce:true
       },
       /**
        * 是否派发列表滚动开始的事件
@@ -75,7 +76,7 @@
       refreshDelay: {
         type: Number,
         default: 20
-      }
+      },
     },
     mounted() {
       // 保证在DOM渲染完毕后初始化better-scroll
@@ -92,7 +93,8 @@
         this.scroll = new BScroll(this.$refs.wrapper, {
           probeType: this.probeType,
           click: this.click,
-          scrollX: this.scrollX
+          scrollX: this.scrollX,
+          useTransition:false
         })
         // 是否派发滚动事件
         if (this.listenScroll) {
