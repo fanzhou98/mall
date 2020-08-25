@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row bottom-bar">
-      <div class="col-3 d-flex align-items-center p-0">
+      <div class="col d-flex align-items-center p-0">
         <div class="select-wrap d-flex align-items-center justify-content-center" @click="selectClick()">
             <i class="fa fa-check fa-lg" v-show="this.allTicked"></i>
         </div>

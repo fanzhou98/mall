@@ -12,7 +12,7 @@
       </nav-bar>
       <!--滚动后固定的tabbar-->
       <tab-control class="row tabControl-2"
-                   :title="['Trends','New','Special']"
+                   :title="['流行','新品','推荐']"
                    :currentTabIndex="currentTabIndex"
                    @homeTabClick="tabClick"
                    ref="tabControl2"
@@ -47,7 +47,7 @@
 
         <!--TabControl-->
         <tab-control class="row tabControl"
-                     :title="['Trends','New','Special']"
+                     :title="['流行','新品','推荐']"
                      @homeTabClick="tabClick"
                      ref="tabControl1"
                      :class={fixTabControl:fixTabControl}

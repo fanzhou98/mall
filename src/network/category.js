@@ -5,9 +5,21 @@ export function getCategory() {
     url:'/category',
   })
 }
+export function getDetailCategory(maitKey) {
+  return request({
+    url:'/subcategory',
+    params:{
+      maitKey
+    }
+  })
+}
 
-export class getTabInfo {
-  constructor(data){
-    const list = data.list;
-  }
+export function getMiniWallkeyGoods(type,miniWallkey) {
+  return request({
+    url:'/subcategory/detail',
+    params: {
+      miniWallkey,
+      type
+    }
+  })
 }

@@ -14,9 +14,6 @@
         <div class="ml-2" >
           <i class="fa fa-star-o fa-lg text-warning " style="font-size:16px">{{this.goodsItem.cfav}}</i>
         </div>
-        <div class="mr-2">
-          <i class="fa fa-cart-plus fa-2x text-secondary"  style="font-size:24px"></i>
-        </div>
       </div>
 
     </div>

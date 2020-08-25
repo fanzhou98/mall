@@ -5,7 +5,7 @@
             :pull-up-load="true"
             :listenScroll="true"
             ref="scroll">
-      <div class="wrap shadow-sm d-flex justify-content-center align-items-center"
+      <div class="wrap d-flex justify-content-center align-items-center"
            v-for="(item,index) in tabInfo"
            @click="tabClick(index)"
            :class="{active:nowIndex===index,
@@ -38,7 +38,8 @@
     },
     methods:{
       tabClick(index){
-        this.nowIndex = index
+        this.nowIndex = index;
+        this.$emit('tabClick',index)
         //console.log(this.nowIndex);
       }
     }
@@ -61,8 +62,8 @@
     font-weight: 200;
   }
   .active{
-    color: white;
-    border-radius:0 10px 10px 0;
+    background-color: #ffffff;
+    border:none;
     transition: 50ms;
   }
   .activeTop{
