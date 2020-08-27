@@ -4,13 +4,15 @@
       <!--NavBar-->
       <category-nav-bar/>
 
-      <div class="row">
+      <div class="row" style="background-color: white">
         <!--TabMenu-->
         <category-tab-menu class="col-3 p-0"
                            :tabInfo="tabInfo"
                            @tabClick="tabClick"/>
+
+        <!--8.26卡在这了，给子组件传值-->
         <category-tab-detail class="col-9 p-0"
-                             :detail-tab-info="detailTabInfo"
+                             :detail-tab-info="this.list"
                              :goods="goods"
                              :currentTabIndex="currentTabIndex"/>
       </div>
@@ -39,16 +41,21 @@
     },
     data(){
       return{
-        tabInfo:null,
+        tabInfo:[],
         currentTabIndex:0,
         categoryData:{},
         maitKey:[],
         miniWallkey:[],
-        detailTabInfo:null,
         goods:{
           'pop':{list:[]},
           'new':{list:[]},
           'sell':{list:[]},
+        },
+        list:{
+          list:[],
+          'pop':[],
+          'new':[],
+          'sell':[],
         },
       }
     },
@@ -70,15 +77,19 @@
           /*
           * 3.获取初始tab上部分展示的内容
           * */
-          getDetailCategory(this.maitKey[this.currentTabIndex]).then((res)=>{
-            this.detailTabInfo = res.data.list
-          });
+          for (let i = 0;i < this.tabInfo.length;i++){
+            getDetailCategory(this.tabInfo[i].maitKey).then((res)=>{
+              this.list.list.push(res.data.list)
+            })
+          }
           /*
-          * 4.获取初始下部分miniWallkey商品
-          * */
-          for (let i of ['pop','new','sell']){
-            for(let key of this.miniWallkey){
-              this._getDetailCategory(i,key)
+         * 4.获取右下miniWallkey商品
+         * */
+          for(let i = 0; i < this.tabInfo.length; i++){
+            for(let k of ['pop','new','sell']){
+              getMiniWallkeyGoods(k,this.tabInfo[i].miniWallkey).then((res)=>{
+                this.list[k].push(res)
+              })
             }
           }
         })

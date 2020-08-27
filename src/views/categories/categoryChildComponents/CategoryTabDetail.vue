@@ -7,7 +7,7 @@
             ref="scroll"
             @getScrollPosition="getScrollPosition">
       <div class="row p-3">
-        <div class="col-3 d-block justify-content-center align-items-center mb-2" v-for="(item,index) in detailTabInfo">
+        <div class="col-3 d-block justify-content-center align-items-center mb-2" v-for="(item,index) in detailTabInfo.list[this.currentTabIndex]">
             <div class="d-flex justify-content-center"><img :src="item.image" alt="" class="image"></div>
             <div class="text-center text">{{item.title}}</div>
         </div>
@@ -17,15 +17,19 @@
                    @homeTabClick="homeTabClick"/>
 
       <div class="row p-3">
-        <category-goods-item :goodsItem="item"
+       <!-- <category-goods-item :goodsItem="item"
                              v-for="item in goods[this.currentTabName].list[this.currentTabIndex]"
+                             class="col-6 p-0 mt-2 d-block align-items-center"
+                             @imageLoaded="imageLoaded" /> -->
+        <category-goods-item :goodsItem="item"
+                             v-for="item in detailTabInfo[currentTabName][currentTabIndex]"
                              class="col-6 p-0 mt-2 d-block align-items-center"
                              @imageLoaded="imageLoaded" />
       </div>
     </scroll>
 
     <back-top @click.native="backUpClick"
-              v-show="showBackTop" :right="10" :bottom="100"/>
+              v-show="showBackTop" :right="20" :bottom="100"/>
   </div>
 </template>
 
@@ -52,12 +56,16 @@
     ],
     props:{
       detailTabInfo:{
-        type:Array,
-        default:[]
+        // type:Object,
+        default(){
+          return {}
+        }
       },
       goods:{
         type: Object,
-        default:{}
+        default(){
+          return {}
+        }
       },
       currentTabIndex:{
         type: Number,
@@ -66,8 +74,10 @@
     },
     data(){
       return{
+        show:false,
         currentIndex:0,
         currentTabName:'pop',
+        goodsList:[],
       }
     },
     methods:{

@@ -3,7 +3,7 @@ import axios from 'axios'
 export function request(config) {
 //创建axios实例
   const instance = axios.create({
-    baseURL:'add wechat coderwhy003',
+    baseURL:'为防止接口被恶意使用，需要接口可以添加老师微信coderwhy003',
     timeout:5000
   })
 

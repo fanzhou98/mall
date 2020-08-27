@@ -23,3 +23,11 @@ export function getMiniWallkeyGoods(type,miniWallkey) {
     }
   })
 }
+
+export class categoryList {
+  constructor(maitKey,miniWallKey,title){
+    this.maitKey = maitKey;
+    this.miniWallKey = miniWallKey;
+    this.title = title
+  }
+}

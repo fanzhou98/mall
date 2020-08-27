@@ -28,7 +28,7 @@
     props:{
       tabInfo:{
         type:Array,
-        default:null
+        default:[]
       }
     },
     data(){
